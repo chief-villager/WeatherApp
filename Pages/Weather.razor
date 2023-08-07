@@ -1,0 +1,65 @@
+﻿@page "/weather"
+@inject OpenWeatherClient OpenWeatherClient
+
+
+<div class="container">
+<div>
+
+    <label for="Latitude">Latitude</label>
+    <input @bind-value="lat" type="number"  placeholder="Enter number">
+
+
+    <label for="Longitude">Longitude</label>
+    <input @bind-value="lon" type="number"  placeholder="Enter number">
+
+    <button @onclick="GetWeather">Get Weather</button>
+
+
+
+</div>
+
+
+@if (weather != null)
+
+{
+
+    foreach (var item in weather.Weather)
+
+    {
+                                <h1>Longtitude - @(weather.Coord.Lon)</h1>
+                                <h1>Latitude - @(weather.Coord.Lat)</h1>
+
+                                <h1>Main Weather - @(item.Main)</h1>
+                                <h1>Description - @(item.Description)</h1>
+
+    }
+                 <h1>Temperature - @(weather.Main.Temp)</h1>
+                 <h1>Country - @(weather.Sys.Country)</h1>
+
+
+}
+else
+{
+             <p></p>
+}
+
+</div>
+
+@code {
+
+    private WeatherModel weather;
+
+    public double lat { get; set; }
+    public double lon { get; set; }
+
+    public async Task GetWeather()
+    {
+        weather = await OpenWeatherClient.GetWeatherReport(lat, lon);
+
+
+
+    }
+
+
+
+}
